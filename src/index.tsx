@@ -25,8 +25,11 @@ declare global {
         startLayout: any;
         initComboBox: any;
         intializeWizard: any;
+        initAnimatedCheckboxes: any;
+        notyf: any;
     }
 }
+
 function PrivateRoute({ ...rest }) {
     const [user, setUser] = useState(null);
     let navigate = useNavigate();
@@ -52,7 +55,7 @@ function PrivateRoute({ ...rest }) {
                     <Route path="*" element={<Navigate to="/" />} />
                     <Route path="/" element={<App user={user} />} />
                     <Route path="/login" element={<Sign />} />
-                    <Route path="/candy/*" element={<Candy />} />
+                    <Route path="/business/*" element={<Candy />} />
                 </>
             </Routes>
         </>
@@ -107,7 +110,7 @@ ReactDOM.render(
             >
                 <div className="page-content-wrapper pt-2">
                     <div className="page-content is-relative">
-                        <SubHeader title="CandySwap" />
+                        <SubHeader title="Freelas.com" />
                         <PrivateRoute />
                     </div>
                 </div>

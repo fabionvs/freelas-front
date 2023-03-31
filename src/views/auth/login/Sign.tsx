@@ -28,7 +28,9 @@ function Sign() {
         authService.login(username, password).then(
             (response: any) => {
                 console.log(response)
-                navigate('/')
+                if(response.success == true){
+                    navigate('/')
+                }
             },
             (error: any) => {
                 console.log(error)
@@ -64,7 +66,7 @@ function Sign() {
                             <div className="is-form">
                                 <div className="hero-body">
                                     <div className="form-text">
-                                        <h2>Sign In</h2>
+                                        <h2>Login - Freelas.com</h2>
                                         <p>Login to access your account</p>
                                     </div>
                                     <div className="form-text is-hidden">
@@ -77,9 +79,9 @@ function Sign() {
                                         action="activity-main.html"
                                     >
                                         <div className="control has-validation">
-                                            <input type="text" className="input" placeholder="" />
+                                            <input type="text" className="input" placeholder=""  onChange={(e : any) => {setUsername(e.target.value)}}/>
                                             <small className="error-text">This is a required field</small>
-                                            <div className="auth-label">Email Address</div>
+                                            <div className="auth-label">Usuário</div>
                                             <div className="auth-icon">
                                                 <i className="lnil lnil-envelope" />
                                             </div>
@@ -122,58 +124,18 @@ function Sign() {
                                             </div>
                                         </div>
                                         <div className="control has-validation">
-                                            <input type="password" className="input" />
-                                            <div className="auth-label">Password</div>
+                                            <input type="password" className="input" onChange={(e : any) => {setPassword(e.target.value)}} />
+                                            <div className="auth-label">Senha</div>
                                             <div className="auth-icon">
                                                 <i className="lnil lnil-lock-alt" />
                                             </div>
-                                        </div>
-                                        <div className="control is-flex">
-                                            <label className="remember-toggle">
-                                                <input type="checkbox" />
-                                                <span className="toggler">
-                                                    <span className="active">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width={24}
-                                                            height={24}
-                                                            viewBox="0 0 24 24"
-                                                            fill="none"
-                                                            stroke="currentColor"
-                                                            strokeWidth={2}
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            className="feather feather-check"
-                                                        >
-                                                            <polyline points="20 6 9 17 4 12" />
-                                                        </svg>
-                                                    </span>
-                                                    <span className="inactive">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width={24}
-                                                            height={24}
-                                                            viewBox="0 0 24 24"
-                                                            fill="none"
-                                                            stroke="currentColor"
-                                                            strokeWidth={2}
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            className="feather feather-circle"
-                                                        >
-                                                            <circle cx={12} cy={12} r={10} />
-                                                        </svg>
-                                                    </span>
-                                                </span>
-                                            </label>
-                                            <div className="remember-me">Remember Me</div>
-                                            <a id="forgot-link">Forgot Password?</a>
                                         </div>
                                         <div className="button-wrap has-help">
                                             <button
                                                 id="login-submit"
                                                 type="button"
                                                 className="button h-button is-big is-rounded is-primary is-bold is-raised"
+                                                onClick={handleLogin}
                                             >
                                                 Login Now
                                             </button>
