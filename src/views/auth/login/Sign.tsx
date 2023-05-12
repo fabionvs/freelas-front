@@ -24,7 +24,6 @@ function Sign() {
 
     const handleLogin = (e: any) => {
         e.preventDefault();
-        console.log(username, password)
         authService.login(username, password).then(
             (response: any) => {
                 console.log(response)

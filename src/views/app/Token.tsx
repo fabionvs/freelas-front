@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom'; // import do hook
 import StepWizard from "react-step-wizard";
-import Candy from '../../services/Candy';
+import Candy from '../../services/Business';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import Category from '../../services/Category';

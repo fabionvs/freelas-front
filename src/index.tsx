@@ -13,6 +13,7 @@ import Logout from './views/auth/login/Logout';
 import Header from './components/header/Header';
 import Navbar from './components/header/Navbar';
 import SubHeader from './components/header/SubHeader';
+import Search from './views/app/Search';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 declare global {
@@ -55,6 +56,7 @@ function PrivateRoute({ ...rest }) {
                     <Route path="*" element={<Navigate to="/" />} />
                     <Route path="/" element={<App user={user} />} />
                     <Route path="/login" element={<Sign />} />
+                    <Route path="/search" element={<Search />} />
                     <Route path="/business/*" element={<Candy />} />
                 </>
             </Routes>

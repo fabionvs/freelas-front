@@ -12,15 +12,26 @@ const getCsrf = () => {
         .get('/sanctum/csrf-cookie');
 };
 
+const create = async (data: any) => {
+    return api
+        .post("/api/signup", data)
+        .then((response: any) => {
+            if (response.data.success == true) {
+                subject.next(response.data.user)
+            }
+            return response.data;
+        });
+}
+
 const login = async (address: string, signature: string) => {
     return api
         .post("/login", {
-            address,
-            signature,
+            username: address,
+            password: signature,
         })
         .then((response) => {
             subject.next(response.data.user)
-            return response.data.user;
+            return response.data;
         });
 }
 
@@ -80,5 +91,6 @@ export default {
     logout,
     getUser,
     firstLogin,
-    observable
+    observable,
+    create
 };

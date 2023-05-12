@@ -11,6 +11,7 @@ function Index() {
         <>
             <Routes>
                 <Route path="/create" element={<Create />} />
+                <Route path="/search" element={<Create />} />
             </Routes>
         </>
     )

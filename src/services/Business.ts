@@ -12,14 +12,16 @@ const upload = async (id: any, file: any) => {
             return { id: id, success: response.data.success, token: response.data.token };
         });
 }
-const create = async (data: any) => {
+
+const search = async (data: any) => {
     return api
-        .post("/api/candy/create", data)
+        .get("/api/search", {
+            params: data
+        })
         .then((response: any) => {
             return response.data;
         });
 }
-
 
 const show = async (id: any, data: any) => {
     return api
@@ -31,29 +33,8 @@ const show = async (id: any, data: any) => {
         });
 }
 
-
-const transactions = async (id: any, data: any) => {
-    return api
-        .get("/api/candy/transactions/" + id, {
-            params: data
-        })
-        .then((response: any) => {
-            return response.data;
-        });
-}
-
-const complete = async (id: any) => {
-    return api
-        .get("/api/candy/complete/" + id)
-        .then((response: any) => {
-            return response.data;
-        });
-}
-
 export default {
     upload,
-    create,
     show,
-    transactions,
-    complete
+    search
 };
