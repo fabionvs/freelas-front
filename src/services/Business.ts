@@ -1,7 +1,8 @@
 import api from "./Api";
-const upload = async (id: any, file: any) => {
+const upload = async (id: any, file: any, businessId: any) => {
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("business_id", businessId);
     return api
         .post("/api/file/upload", formData, {
             headers: {

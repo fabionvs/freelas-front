@@ -14,6 +14,7 @@ import Header from './components/header/Header';
 import Navbar from './components/header/Navbar';
 import SubHeader from './components/header/SubHeader';
 import Search from './views/app/Search';
+import ListBusiness from './views/app/List';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 declare global {
@@ -35,9 +36,11 @@ function PrivateRoute({ ...rest }) {
     const [user, setUser] = useState(null);
     let navigate = useNavigate();
     let location = useLocation();
+    
     useEffect(() => {
         Auth.getUser();
     }, []);
+
     useEffect(() => {
         // subscribe to home component messages
         const subscription = Auth.observable.onUser().subscribe((user: any) => {
@@ -57,6 +60,7 @@ function PrivateRoute({ ...rest }) {
                     <Route path="/" element={<App user={user} />} />
                     <Route path="/login" element={<Sign />} />
                     <Route path="/search" element={<Search />} />
+                    <Route path="/list" element={<ListBusiness />} />
                     <Route path="/business/*" element={<Candy />} />
                 </>
             </Routes>

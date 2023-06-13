@@ -7,6 +7,13 @@ import ToastContainer from 'react-bootstrap/ToastContainer';
 import Category from '../../services/Category';
 import Auth from "../../services/Auth";
 import classNames from "classnames";
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+
+const containerStyle = {
+    width: '100%',
+    height: '400px'
+};
+
 
 export default function Create() {
 
@@ -16,8 +23,10 @@ export default function Create() {
     const [formAlert, setFormAlert] = useState(false);
     const [categories, setCategories] = useState([] as any);
     const setInstance = (SW: any) => updateInstance(SW);
-
     let navigate = useNavigate();
+
+    const [latitude, setLatitude] = useState(0);
+    const [longitude, setLongitude] = useState(0);
     const location = useLocation();
     const [category, setCategory] = useState(null);
     const [name, setName] = useState("");
@@ -40,6 +49,14 @@ export default function Create() {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
+    const [businessId, setBusinessId] = useState(null as any);
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            setLatitude(position.coords.latitude)
+            setLongitude(position.coords.longitude)
+        });
+    }, []);
 
     useEffect(() => {
         // subscribe to home component messages
@@ -68,8 +85,8 @@ export default function Create() {
                 <div className="wizard-buttons is-active">
                     <div className="wizard-buttons-inner">
                         <button className="button h-button is-light is-bold wizard-button-previous" onClick={instance.previousStep}>Voltar</button>
-                        {(step.activeStep != instance?.totalSteps && step.activeStep != 5) && <button className="button h-button is-primary is-bold is-elevated wizard-button-next" onClick={instance.nextStep}>Próximo Passo</button>}
-                        {(step.activeStep == 5) && <button className="button h-button is-primary is-bold is-elevated wizard-button-next" disabled={(password !== repeatPassword || password.length < 6)} onClick={create}>Cadastrar Usuário</button>}
+                        {(step.activeStep != instance?.totalSteps && step.activeStep != 6) && <button className="button h-button is-primary is-bold is-elevated wizard-button-next" onClick={instance.nextStep}>Próximo Passo</button>}
+                        {(step.activeStep == 6) && <button className="button h-button is-primary is-bold is-elevated wizard-button-next" disabled={(password !== repeatPassword || password.length < 6)} onClick={create}>Cadastrar Usuário</button>}
                         {(step.activeStep == instance?.totalSteps) && <button className="button h-button is-primary is-bold is-elevated wizard-button-next" onClick={instance.nextStep}>Finalizar Cadastro</button>}
                     </div>
                 </div>
@@ -212,10 +229,13 @@ export default function Create() {
             category_id: category,
             username: username,
             password: password,
-            email: email
+            email: email,
+            latitude: latitude,
+            longitude: longitude
         }).then((response: any) => {
             if (response.success) {
-                instance.goToStep(6)
+                setBusinessId(response.business_id)
+                instance.goToStep(7)
 
             }
         });
@@ -240,7 +260,7 @@ export default function Create() {
             } else {
                 error = true;
             }
-            await Candy.upload(f.length - 1, upFiles[i]).then((response: any) => {
+            await Candy.upload(f.length - 1, upFiles[i], businessId).then((response: any) => {
                 if (response.success == true) {
                     f[response.id].sent = 1;
                     upFilesResponse[upFilesResponse.length] = response.token;
@@ -563,6 +583,46 @@ export default function Create() {
                                     <div className="form-header stuck-footer">
                                         <div className="form-header-inner">
                                             <div className="left">
+                                                <h3><i className="lnil lnil-location-marker"></i> Localização</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="form-body">
+                                        {/*Fieldset*/}
+                                        <div className="form-fieldset">
+                                            <div className="fieldset-heading">
+                                                <h4>Arraste o marcador</h4>
+                                                <p>Selecione a localização do seu negócio.</p>
+                                                <div className="row">
+                                                    <div className='col-12'>
+                                                        <h3>Posicione o marcador no local correto:</h3>
+                                                        <LoadScript
+                                                            googleMapsApiKey="AIzaSyBnQ1_KJUZ5wyjbfZAwWo-pI7D3jCVaHhE"
+                                                        >
+                                                            <GoogleMap
+                                                                mapContainerStyle={containerStyle}
+                                                                center={{ lat: latitude, lng: longitude }}
+                                                                zoom={10}
+                                                            >
+                                                                { /* Child components, such as markers, info windows, etc. */}
+                                                                <Marker onDragEnd={(e: any) => {
+                                                                    setLatitude(e.latLng.lat);
+                                                                    setLongitude(e.latLng.lng);
+                                                                }} draggable={true} position={{ lat: latitude, lng: longitude }} />
+                                                            </GoogleMap>
+                                                        </LoadScript>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="form-layout">
+                                <div className="form-outer">
+                                    <div className="form-header stuck-footer">
+                                        <div className="form-header-inner">
+                                            <div className="left">
                                                 <h3><i className="lnil lnil-candy"></i> Cadastro</h3>
                                             </div>
                                         </div>
@@ -635,7 +695,7 @@ export default function Create() {
                                     <div className="form-header stuck-footer">
                                         <div className="form-header-inner">
                                             <div className="left">
-                                                <h3><i className="lnil lnil-candy"></i> Public Files</h3>
+                                                <h3><i className="lnil lnil-candy"></i> ocalização</h3>
                                             </div>
                                         </div>
                                     </div>
